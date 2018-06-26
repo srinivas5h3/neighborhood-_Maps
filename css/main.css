@@ -1,0 +1,33 @@
+#map{
+    height:700px;
+    width:80%;
+    float: right;
+}
+h1{
+    color:orangered;
+    background-color:white;
+    font-family:sans-serif;
+    text-align:center;
+}
+
+.finding{
+    width:20%;
+    height:50px;
+    border: 2px ;
+}
+#searchlist{
+    width:20%;
+    height:50px;
+
+}
+.street-view{
+    color:violet;
+}
+@media screen and (min-width:300px) and (max-width:500px){
+    #map{
+        width:50%;
+    }
+    .iden{
+        width:45%;
+    }
+}
