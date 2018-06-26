@@ -1,5 +1,9 @@
-// declaring global variables
-var place,edges,marker;
+/*
+declaring global variables
+*/
+var place;
+var edges;
+var marker;
 var popupWindow;
 
 var  favouriteloc = [
