@@ -6,79 +6,92 @@ var edges;
 var marker;
 var popupWindow;
 
-var  favouriteloc = [
+var favouriteloc = [
     /*
     the variable avouriteloc is taking the place names
     and locations latitude and longitudes of the 
     the each locaton is stored
     */
     {
-      place_name: 'Vijayawada Railway Station',
-      location: 
-      {
-        lat: 16.5178302,
-        lng: 80.6179062
-      }
-    },  
-    {
-      place_name: 'kachiguda Railway Station',
-      location: 
-      {
-        lat: 17.3844564,
-        lng: 78.5024288
-      }
+        place_name: 'Vijayawada Railway Station',
+        location:
+        {
+            lat: 16.5178302,
+            lng: 80.6179062
+        }
     },
-     {
-      place_name: 'Royapuram Railway Station',
-      location: 
-      {
-        lat: 13.1041034,
-        lng: 80.2914512
-      }
-    }, 
     {
-      place_name: 'Howrah Railway Station',
-      location: 
-      {
-        lat: 22.5817479,
-        lng: 88.333449
-      }
-    }, 
+        place_name: 'kachiguda Railway Station',
+        location:
+        {
+            lat: 17.3844564,
+            lng: 78.5024288
+        }
+    },
     {
-      place_name: 'Chennai Railway Station',
-      location: 
-      {
-        lat: 13.0822782,
-        lng: 80.273377    
-      }
-    }, 
+        place_name: 'Royapuram Railway Station',
+        location:
+        {
+            lat: 13.1041034,
+            lng: 80.2914512
+        }
+    },
     {
-      place_name: 'Bengaluru Railway Station',
-      location: 
-      {
-        lat: 12.9786533,
-        lng: 77.5673844
-      }
+        place_name: 'Howrah Railway Station',
+        location:
+        {
+            lat: 22.5817479,
+            lng: 88.333449
+        }
+    },
+    {
+        place_name: 'Chennai Railway Station',
+        location:
+        {
+            lat: 13.0822782,
+            lng: 80.273377
+        }
+    },
+    {
+        place_name: 'Bengaluru Railway Station',
+        location:
+        {
+            lat: 12.9786533,
+            lng: 77.5673844
+        }
     },
     {
         place_name: 'Pune Railway Station',
-        location: 
+        location:
         {
-          lat: 18.528381,
-          lng: 73.8721073
+            lat: 18.528381,
+            lng: 73.8721073
         }
     },
     {
         place_name: 'Nashik Railway Station',
-        location: 
+        location:
         {
-          lat: 19.9485279,
-          lng: 73.8407324
+            lat: 19.9485279,
+            lng: 73.8407324
         }
     }
 
-  ];
-
+];
+function animate(marker) {
+    /*
+    this function is used for whe you click the marker
+    the marker will bounce
+    */
+    if (marker.getAnimation() !== null) {
+        marker.setAnimation(null);
+    } else {
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(function () {
+            marker.setAnimation(null);
+        }, 1000);
+    }
+}
 function map() {
     /*
     the map function is using for displays' the map
@@ -93,11 +106,11 @@ function map() {
         mapTypeControl: false
     });
     popupWindow = new google.maps.InfoWindow();
-    edges = new google.maps.LatLngBounds();   
+    edges = new google.maps.LatLngBounds();
     ko.applyBindings(new Desgin());
 }
 
-var showlocation = function(content) {
+var showlocation = function (content) {
     /*
     the showlocation function is very large and important
     in this function use the foursquare API's
@@ -111,14 +124,14 @@ var showlocation = function(content) {
     the message Oops! some wrong with foursquare api
     */
     var link;
-    var clientID,clientSecret;
+    var clientID, clientSecret;
     var self = this;
     this.place_name = content.place_name;
     this.position = content.location;
     this.street = '',
-    this.city = '',
-    this.phone = '',
-    this.country = '';
+        this.city = '',
+        this.phone = '',
+        this.country = '';
     this.visible = ko.observable(true);
     /* my foursquare clientId*/
     clientID = 'CTHZCEZIKD54MH1NYGBZYFBP4GJFPZXXKKK0FR1K4MCYLN31';
@@ -128,18 +141,18 @@ var showlocation = function(content) {
     and it takes the clientId and and clientSecret and 
     location latitude and longitude*/
     link = 'https://api.foursquare.com/v2/venues/search?ll=' + this.position.lat + ',' + this.position.lng + '&client_id=' + clientID + '&client_secret=' + clientSecret + '&v=20160118' + '&query=' + this.place_name;
-    $.getJSON(link).done(function(content) {
+    $.getJSON(link).done(function (content) {
         /*
         it is used for not getting the information for each location
         it is show the some message
         */
-		var output = content.response.venues[0];
-        self.street = output.location.formattedAddress[0] ? output.location.formattedAddress[0]: 'The street not found';
-        self.city = output.location.formattedAddress[1] ? output.location.formattedAddress[1]: 'The City not found';
+        var output = content.response.venues[0];
+        self.street = output.location.formattedAddress[0] ? output.location.formattedAddress[0] : 'The street not found';
+        self.city = output.location.formattedAddress[1] ? output.location.formattedAddress[1] : 'The City not found';
         self.phone = output.contact.formattedPhone ? output.contact.formattedPhone : 'The phone.no not found';
-        self.country = output.location.formattedAddress[2] ? output.location.formattedAddress[2]: 'the country name is not found ';
+        self.country = output.location.formattedAddress[2] ? output.location.formattedAddress[2] : 'the country name is not found ';
 
-    }).fail(function() {
+    }).fail(function () {
         /*
         this function is used for any problem with foursquare api's
         it will show the alert 
@@ -154,34 +167,35 @@ var showlocation = function(content) {
         */
         position: this.position,
         place_name: this.place_name,
-        animation: google.maps.Animation.BOUNCE,
+        animation: google.maps.Animation.DROP,
         icon: marker
-    });    
+    });
     self.remove = ko.computed(function () {
-        if(self.visible() === true) {
+        if (self.visible() === true) {
             self.marker.setMap(place);
             edges.extend(self.marker.position);
             place.fitBounds(edges);
         } else {
             self.marker.setMap(null);
         }
-    });    
-    this.marker.addListener('click', function() {
+    });
+    this.marker.addListener('click', function () {
         infowindow(this, self.street, self.city, self.phone, self.country, popupWindow);
         place.panTo(this.getPosition());
+        animate(this);
     });
     /*
     show place selected from location list
     */
-    this.show = function(location) {
+    this.show = function (location) {
         google.maps.event.trigger(self.marker, 'click');
     };
     /*
     show bounce effect when list is selected
     */
-    this.fall = function(place) {
-		google.maps.event.trigger(self.marker, 'click');
-	};
+    this.fall = function (place) {
+        google.maps.event.trigger(self.marker, 'click');
+    };
 };
 function infowindow(marker, street, city, phone, country, openwindow) {
     /*
@@ -192,12 +206,12 @@ function infowindow(marker, street, city, phone, country, openwindow) {
     if (openwindow.marker != marker) {
         openwindow.setContent('');
         openwindow.marker = marker;
-        openwindow.addListener('closeclick', function() {
+        openwindow.addListener('closeclick', function () {
             openwindow.marker = null;
         });
         var streetview = new google.maps.StreetViewService();
         var radius = 50;
-        var windowdata = '<h5>' + marker.place_name + '</h5>' + 
+        var windowdata = '<h5>' + marker.place_name + '</h5>' +
             '<p>' + street +
             '</br>' + city +
             '</br>' + phone +
@@ -222,7 +236,7 @@ function infowindow(marker, street, city, phone, country, openwindow) {
         openwindow.open(place, marker);
     }
 }
-var Desgin = function() {
+var Desgin = function () {
     /*
     the design function is search in the location list
     and it is help for search lower and higher case latters
@@ -231,23 +245,23 @@ var Desgin = function() {
     var self = this;
     this.findplace = ko.observable('');
     this.some = ko.observableArray([]);
-    favouriteloc.forEach(function(location) {
-        self.some.push( new showlocation(location) );
+    favouriteloc.forEach(function (location) {
+        self.some.push(new showlocation(location));
     });
     /*
     favouriteloc identified on map
     */
-    this.placelist = ko.computed(function() {
+    this.placelist = ko.computed(function () {
         var findfilter = self.findplace().toLowerCase();
         if (findfilter) {
-            return ko.utils.arrayFilter(self.some(), function(location) {
+            return ko.utils.arrayFilter(self.some(), function (location) {
                 var str = location.place_name.toLowerCase();
                 var sink = str.includes(findfilter);
                 location.visible(sink);
-				return sink;
-			});
+                return sink;
+            });
         }
-        self.some().forEach(function(location) {
+        self.some().forEach(function (location) {
             location.visible(true);
         });
         return self.some();
