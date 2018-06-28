@@ -1,3 +1,4 @@
+
 #map{
     height:700px;
     width:80%;
@@ -23,11 +24,20 @@ h1{
 .street-view{
     color:violet;
 }
-@media screen and (min-width:100px) and (max-width:450px){
+@media screen and (min-width:300px) and (max-width:600px){
     #map{
-        width:50%;
+        width:60%;
     }
     .iden{
-        width:45%;
+        width:35%;
     }
+    .searchbar{
+        width:100px ;
+    }
+}
+@media screen and (min-width:600px) and (max-width:930px){
+    .searchbar{
+        width:120px ;
+    }
+
 }
