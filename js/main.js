@@ -168,7 +168,6 @@ var showlocation = function(content) {
     });    
     this.marker.addListener('click', function() {
         infowindow(this, self.street, self.city, self.phone, self.country, popupWindow);
-        setBounce(this);
         place.panTo(this.getPosition());
     });
     /*
